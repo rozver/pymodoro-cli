@@ -1,14 +1,8 @@
-import threading
 import time
 import multiprocess
 from pydub import AudioSegment
 from pydub.playback import play
 import argparse
-
-
-def wait_for_press(key_pressed):
-    input()
-    key_pressed.append(True)
 
 
 def countdown(length, remaining_length):
@@ -20,6 +14,9 @@ def countdown(length, remaining_length):
         print(time_format, end='\r')
         length -= 1
         time.sleep(1)
+
+    song = AudioSegment.from_mp3('audio/analog-watch-alarm.mp3')
+    play(song[:2900])
 
 
 class Timer:
@@ -43,32 +40,27 @@ class Timer:
         pomodoro_process.daemon = True
         pomodoro_process.start()
 
-        key_pressed = []
-        pause_thread = threading.Thread(target=wait_for_press, args=(key_pressed,))
-        pause_thread.daemon = True
-        pause_thread.start()
-
         while pomodoro_process.is_alive():
-            if key_pressed:
-                key_pressed = []
-                self.remaining_length = current_length.get()
-                pomodoro_process.terminate()
-                x = input('Press ENTER to resume the timer\n')
-
-                self.start_pomodoro_timer()
+            input('\r')
+            self.remaining_length = current_length.get()
+            pomodoro_process.terminate()
+            if self.remaining_length < 1:
+                break
+            input('\r')
+            self.start_pomodoro_timer()
 
     def start_break_timer(self, length):
+        print('\nBreak started\n')
         current_length = multiprocess.Queue()
         break_process = multiprocess.Process(target=countdown, args=(length, current_length))
         break_process.start()
         break_process.join()
+        break_process.terminate()
+        input('Press ENTER to start another pomodoro\r')
 
     def start(self):
         for current_pomodoro_index in range(self.num_pomodoros):
             self.start_pomodoro_timer()
-
-            song = AudioSegment.from_mp3('audio/analog-watch-alarm.mp3')
-            play(song[:2900])
 
             if current_pomodoro_index < 4:
                 self.start_break_timer(self.normal_break_length)
@@ -80,10 +72,10 @@ class Timer:
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--num_pomodoros', type=str, default=4)
-    parser.add_argument('--pomodoro_length', type=str, default=25)
-    parser.add_argument('--normal_break_length', type=str, default=5)
-    parser.add_argument('--long_break_length', type=str, default=25)
+    parser.add_argument('--num_pomodoros', type=int, default=4)
+    parser.add_argument('--pomodoro_length', type=float, default=25.0)
+    parser.add_argument('--normal_break_length', type=float, default=5.0)
+    parser.add_argument('--long_break_length', type=float, default=25.0)
     args = parser.parse_args()
 
     timer = Timer(args)
