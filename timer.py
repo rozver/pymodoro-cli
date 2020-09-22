@@ -3,6 +3,7 @@ import time
 import multiprocess
 from pydub import AudioSegment
 from pydub.playback import play
+import argparse
 
 
 def wait_for_press(key_pressed):
@@ -22,12 +23,12 @@ def countdown(length, remaining_length):
 
 
 class Timer:
-    def __init__(self, num_pomodoros, pomodoro_length, normal_break_length, long_break_length):
-        self.num_pomodoros = num_pomodoros
-        self.pomodoro_length = pomodoro_length
-        self.normal_break_length = normal_break_length
-        self.long_break_length = long_break_length
-        self.remaining_length = pomodoro_length
+    def __init__(self, args):
+        self.num_pomodoros = args.num_pomodoros
+        self.pomodoro_length = args.pomodoro_length
+        self.normal_break_length = args.normal_break_length
+        self.long_break_length = args.long_break_length
+        self.remaining_length = args.pomodoro_length
 
     def convert_time_to_seconds(self):
         self.num_pomodoros = self.num_pomodoros
@@ -78,12 +79,14 @@ class Timer:
 
 
 def main():
-    num_pomodoros = 4
-    pomodoro_length = 0.125
-    normal_break_length = 0.125
-    long_break_length = 0.125
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--num_pomodoros', type=str, default=4)
+    parser.add_argument('--pomodoro_length', type=str, default=25)
+    parser.add_argument('--normal_break_length', type=str, default=5)
+    parser.add_argument('--long_break_length', type=str, default=25)
+    args = parser.parse_args()
 
-    timer = Timer(num_pomodoros, pomodoro_length, normal_break_length, long_break_length)
+    timer = Timer(args)
     timer.convert_time_to_seconds()
     timer.start()
 
