@@ -41,12 +41,12 @@ class Timer:
         pomodoro_process.start()
 
         while pomodoro_process.is_alive():
-            input('\r')
+            input('Press ENTER to pause\n')
             self.remaining_length = current_length.get()
             pomodoro_process.terminate()
             if self.remaining_length < 1:
                 break
-            input('\r')
+            input('\n')
             self.start_pomodoro_timer()
 
     def start_break_timer(self, length):
