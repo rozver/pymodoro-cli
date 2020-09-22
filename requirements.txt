@@ -1,0 +1,2 @@
+multiprocess==0.70.10
+pydub==0.24.1
