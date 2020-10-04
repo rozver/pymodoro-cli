@@ -129,7 +129,7 @@ class Tracker:
 
 
 def main():
-    # Parse Timer arguments from command line
+    # Parse Tracker arguments from command line
     parser = argparse.ArgumentParser()
     parser.add_argument('--num_pomodoros', type=int, default=4)
     parser.add_argument('--pomodoro_length', type=float, default=25.0)
