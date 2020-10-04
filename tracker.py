@@ -7,10 +7,9 @@ import argparse
 
 # Main function for a timer counting downwards
 def countdown(length, remaining_length, sound_file):
-    # Update the remaining length object (it is a multiprocess.Queue, so that it can be accessed by the multiprocess
+    # Update the remaining length object (it is a multiprocess.Queue, so that it can be accessed by the multiprocess)
     remaining_length.put(length)
 
-    # While the time has not elapsed
     while length > 0:
         # Get the remaining time and print it in the format MM:SS by swapping the previously printed time
         remaining_length.get()
@@ -18,7 +17,6 @@ def countdown(length, remaining_length, sound_file):
         time_format = '{:02d}:{:02d}'.format(int(length / 60), int(length % 60))
         print(time_format, end='\r')
 
-        # Decrease the length by 1 and pause the multiprocess for 1 second
         length -= 1
         time.sleep(1)
 
@@ -69,7 +67,6 @@ class Tracker:
         pomodoro_process.daemon = True
         pomodoro_process.start()
 
-        # Check if the execution of the timer has finished
         while pomodoro_process.is_alive():
             # While the timer is running in the background, listen to user input
             input('Press ENTER to pause\n')
@@ -78,14 +75,14 @@ class Tracker:
             self.remaining_length = current_length.get()
             pomodoro_process.terminate()
 
-            # If the timer has reached 0 seconds, then it has finished and exit the while loop
+            # Check if the timer has finished (reached 0 seconds)
             if self.remaining_length < 1:
                 break
 
             # Monitor for how long the user has paused the timer
             pause_start_time = time.time()
 
-            # Wait for the user to press ENTER in order to resume the timer
+            # Wait for the user input
             input('Press ENTER to resume\n')
 
             # Print for how long the timer was paused
@@ -95,7 +92,7 @@ class Tracker:
 
             """
             Start the pomodoro timer again, but counting down from 
-            the remaining time we got befor killing the multiprocess
+            the remaining time we got before killing the multiprocess
             """
             self.start_pomodoro_timer()
 
@@ -118,13 +115,13 @@ class Tracker:
             # Start the pomodoro timer
             self.start_pomodoro_timer()
 
-            # After every consecutive 4 pomodoros, instead of a regular break, start a longer break
+            # After every consecutive 4 pomodoros, instead of a regular break, take a longer break
             if current_pomodoro_index < 4:
                 self.start_break_timer(self.normal_break_length)
             else:
                 self.start_break_timer(self.long_break_length)
 
-            # Refresh the remaining length parameter
+            # Refresh the remaining length parameter, so that the next pomodoro timer does not start from 0
             self.remaining_length = self.pomodoro_length
 
 
