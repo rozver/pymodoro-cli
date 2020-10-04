@@ -1,5 +1,5 @@
 # pomodoro
-Simple pomodoro tracker running entirely inside the shell and written in Python 3
+Lightweight and simple pomodoro tracker running entirely inside the shell and written in Python 3
 
 ## Pomodoro technique
 The Pomodoro Technique is a time management method developed by Francesco Cirillo in the late 1980s. The technique uses a timer to break down work into intervals, traditionally 25 minutes in length, separated by short breaks. Each interval is known as a pomodoro, from the Italian word for 'tomato', after the tomato-shaped kitchen timer that Cirillo used as a university student.
@@ -11,11 +11,11 @@ Source: https://en.wikipedia.org/wiki/Pomodoro_Technique
 ## Installation
 In order to install the pomodoro tracker, firstly clone the repository locally by running
 
-``git clone git@github.com:RoZvEr/pomodoro.git``
+```git clone git@github.com:RoZvEr/pomodoro.git```
 
 and then install the required Python dependencies by running
 
-``pip install -r requirements.txt``
+```pip install -r requirements.txt```
 
 after changing the directory to ``./pomodoro``
 
