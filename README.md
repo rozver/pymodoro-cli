@@ -12,7 +12,7 @@ Source: https://en.wikipedia.org/wiki/Pomodoro_Technique
 In order to install the pomodoro tracker, firstly clone the repository locally by running
 
 ```
-git clone git@github.com:RoZvEr/pomodoro.git
+git clone git@github.com:RoZvEr/pymodoro-cli.git
 ```
 
 and then install the required Python dependencies by running
@@ -21,7 +21,14 @@ and then install the required Python dependencies by running
 pip install -r requirements.txt
 ```
 
-after changing the directory to ``./pomodoro``
+after changing the directory to ``./pymodoro-cli``
+
+or install from PyPI by running
+
+```
+pip install pymodoro-cli
+
+```
 
 ## Usage
 In order to start the tracker, run
